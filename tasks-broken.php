@@ -18,22 +18,22 @@ class Task
     private string $title;
     private string $content;
 
-    public function __construct($id, $title, $content)
+    public function __construct()
     {
-        $this->id      = $id;
-        $this->title   = $title;
-        $this->content = $content;
+        $this->id      = $inputId;
+        $this->title   = $inputTitle;
+        $this->content = $inputContent;
     }
 
-    public function getTitle() { return $this->title; }
+    public function getTitle() { $this->title; }
     public function getContent() { return $this->content; }
 
     public function setTitle($title)   { $this->title = $title; }
     public function setContent($content) { $this->content = $content; }
 
-    public function __toString()
+    public function display()
     {
-        return sprintf("[%d] %s\n    %s", $this->id, $this->title, $this->content);
+        echo sprintf("[%d] %s\n    %s", $this->id, $this->title, $this->content);
     }
 }
 
@@ -132,7 +132,7 @@ while (true) {
                 echo "No tasks found.\n";
             } else {
                 foreach ($tasks as $t) {
-                    echo $t . "\n";
+                    $t->displayTask() . "\n";
                 }
             }
             break;
@@ -157,7 +157,6 @@ while (true) {
                 echo "Task #{$id} not found.\n";
                 break;
             }
-            $newTitle   = rl('New title (blank to keep)');
             $newContent = rl('New content (blank to keep)');
 
             $updated = $collection->update(
