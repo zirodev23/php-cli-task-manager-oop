@@ -18,7 +18,7 @@ class Task
     private string $title;
     private string $content;
 
-    public function __construct(int $id, string $title, string $content)
+    public function __construct($id, $title, $content)
     {
         $this->id      = $id;
         $this->title   = $title;
@@ -26,14 +26,14 @@ class Task
     }
 
     // ----- getters / setters -----
-    public function getId(): int { return $this->id; }
-    public function getTitle(): string { return $this->title; }
-    public function getContent(): string { return $this->content; }
+    public function getId() { return $this->id; }
+    public function getTitle() { return $this->title; }
+    public function getContent() { return $this->content; }
 
-    public function setTitle(string $title): void   { $this->title = $title; }
-    public function setContent(string $content): void { $this->content = $content; }
+    public function setTitle($title)   { $this->title = $title; }
+    public function setContent($content) { $this->content = $content; }
 
-    public function __toString(): string
+    public function __toString()
     {
         return sprintf("[%d] %s\n    %s", $this->id, $this->title, $this->content);
     }
@@ -41,12 +41,11 @@ class Task
 
 class TaskCollection
 {
-    /** @var Task[] */
     private array $tasks = [];
     private int $nextId = 1;
 
     // CREATE
-    public function add(string $title, string $content): Task
+    public function add($title, $content)
     {
         $task = new Task($this->nextId++, $title, $content);
         $this->tasks[$task->getId()] = $task;
@@ -54,19 +53,19 @@ class TaskCollection
     }
 
     // READ – single
-    public function get(int $id): ?Task
+    public function get(int $id)
     {
         return $this->tasks[$id] ?? null;
     }
 
     // READ – all
-    public function all(): array
+    public function all()
     {
         return $this->tasks;
     }
 
     // UPDATE
-    public function update(int $id, ?string $title = null, ?string $content = null): bool
+    public function update($id, $title = null, $content = null)
     {
         $task = $this->get($id);
         if (!$task) {
@@ -78,7 +77,7 @@ class TaskCollection
     }
 
     // DELETE
-    public function delete(int $id): bool
+    public function delete($id)
     {
         if (!isset($this->tasks[$id])) {
             return false;
@@ -91,17 +90,17 @@ class TaskCollection
 /* ==============================
    Helper functions (readline)
    ============================== */
-function rl(string $msg): string
+function rl($msg)
 {
     $input = readline($msg . ': ');
     // Store the line in history so the user can press ↑ later
     if ($input !== false) {
         readline_add_history($input);
     }
-    return trim((string)$input);
+    return trim($input);
 }
 
-function printMenu(): void
+function printMenu()
 {
     echo "\n=== Task Manager (CLI) ===\n";
     echo "1) List all tasks\n";
@@ -157,13 +156,13 @@ while (true) {
             break;
 
         case '3': // View single
-            $id   = (int)rl('Enter task ID');
+            $id   = rl('Enter task ID');
             $task = $collection->get($id);
             echo $task ? $task . "\n" : "Task #{$id} not found.\n";
             break;
 
         case '4': // Update
-            $id = (int)rl('Enter task ID to update');
+            $id = rl('Enter task ID to update');
             $task = $collection->get($id);
             if (!$task) {
                 echo "Task #{$id} not found.\n";
@@ -181,7 +180,7 @@ while (true) {
             break;
 
         case '5': // Delete
-            $id = (int)rl('Enter task ID to delete');
+            $id = rl('Enter task ID to delete');
             $deleted = $collection->delete($id);
             echo $deleted ? "Task #{$id} deleted.\n" : "Task #{$id} not found.\n";
             break;
