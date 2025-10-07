@@ -25,8 +25,6 @@ class Task
         $this->content = $content;
     }
 
-    // ----- getters / setters -----
-    public function getId() { return $this->id; }
     public function getTitle() { return $this->title; }
     public function getContent() { return $this->content; }
 
@@ -43,14 +41,6 @@ class TaskCollection
 {
     private array $tasks = [];
     private int $nextId = 1;
-
-    // CREATE
-    public function add($title, $content)
-    {
-        $task = new Task($this->nextId++, $title, $content);
-        $this->tasks[$task->getId()] = $task;
-        return $task;
-    }
 
     // READ – single
     public function get(int $id)
@@ -133,7 +123,6 @@ foreach ($demoData as [$title, $content]) {
    Main interactive loop
    ============================== */
 while (true) {
-    printMenu();
     $choice = rl('Select an option');
 
     switch ($choice) {
